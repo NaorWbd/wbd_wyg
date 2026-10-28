@@ -1,0 +1,12 @@
+{
+  "name": "@naorwbd/web_wyg",
+  "version": "1.0.0",
+  "description": "Small, dependency-free rich text editor for Webbed plugins",
+  "main": "dist/web_wyg.js",
+  "style": "dist/web_wyg.css",
+  "files": ["dist/"],
+  "repository": {"type": "git", "url": "git+https://github.com/NaorWbd/web_wyg.git"},
+  "license": "MIT",
+  "publishConfig": {"registry": "https://npm.pkg.github.com"},
+  "scripts": {"check": "node --check dist/web_wyg.js"}
+}

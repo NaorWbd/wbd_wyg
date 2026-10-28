@@ -1,0 +1,34 @@
+.web-wyg-wrapper {
+  --web-wyg-accent: #20564b;
+  --web-wyg-border: #c8d2ce;
+  --web-wyg-bg: #fff;
+  --web-wyg-text: #1d2925;
+  border: 1px solid var(--web-wyg-border);
+  border-radius: 6px;
+  background: var(--web-wyg-bg);
+  color: var(--web-wyg-text);
+  overflow: hidden;
+}
+.web-wyg-wrapper [hidden] { display: none !important; }
+.web-wyg-toolbar { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px; border-bottom: 1px solid var(--web-wyg-border); }
+.web-wyg-wrapper .web-wyg-button,
+.wp-core-ui .web-wyg-wrapper .web-wyg-button {
+  box-sizing: border-box; min-height: 36px; padding: 5px 10px; border: 1px solid var(--web-wyg-border);
+  border-radius: 4px; background: var(--web-wyg-bg); color: var(--web-wyg-text);
+  font: inherit; cursor: pointer;
+}
+.web-wyg-wrapper .web-wyg-button:hover,
+.wp-core-ui .web-wyg-wrapper .web-wyg-button:hover { background: #ecf4f0; color: var(--web-wyg-accent); }
+.web-wyg-wrapper .web-wyg-button:focus-visible,
+.wp-core-ui .web-wyg-wrapper .web-wyg-button:focus-visible { outline: 2px solid var(--web-wyg-accent); outline-offset: 2px; }
+.web-wyg-wrapper .web-wyg-button[aria-pressed="true"],
+.wp-core-ui .web-wyg-wrapper .web-wyg-button[aria-pressed="true"] { background: var(--web-wyg-accent); border-color: var(--web-wyg-accent); color: #fff; }
+.web-wyg-body { display: flex; min-width: 0; }
+.web-wyg-surface { box-sizing: border-box; width: 100%; min-height: 180px; padding: 12px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; outline: none; }
+.web-wyg-surface:focus { box-shadow: inset 0 0 0 2px var(--web-wyg-accent); }
+.web-wyg-surface .web-wyg-large { font-size: 1.3em; }
+.web-wyg-surface .web-wyg-small { font-size: .85em; }
+.web-wyg-wrapper textarea.web-wyg-source { box-sizing: border-box; flex: 1; min-width: 0; min-height: 180px; margin: 0; padding: 12px; border: 0; border-radius: 0; background: #172420; color: #f4f4e9; font: 14px/24px Consolas, monospace; direction: ltr; text-align: left; white-space: pre; overflow: auto; resize: vertical; }
+.web-wyg-gutter { flex: 0 0 40px; padding: 12px 5px; background: #0f1a17; color: #b7c8c0; font: 12px/24px Consolas, monospace; text-align: right; overflow: hidden; user-select: none; }
+.web-wyg-gutter span { display: block; height: 24px; }
+.web-wyg-help { margin: 0; padding: 6px 10px; border-top: 1px solid var(--web-wyg-border); font-size: 12px; }
