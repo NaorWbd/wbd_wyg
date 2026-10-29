@@ -1,4 +1,4 @@
-/* Webbed WYG 1.0.0. The textarea remains the form source of truth. */
+/* Webbed WYG 1.0.1. The textarea remains the form source of truth. */
 (() => {
   'use strict';
 
@@ -24,11 +24,11 @@
       const tag = node.tagName === 'FONT' ? 'SPAN' : node.tagName;
       const output = allowed.has(tag) ? document.createElement(tag.toLowerCase()) : parent;
       if (tag === 'SPAN' && output !== parent) {
-        const classes = ['web-wyg-large', 'web-wyg-small'].filter(name => node.classList.contains(name));
+        const classes = ['wbd-wyg-large', 'wbd-wyg-small'].filter(name => node.classList.contains(name));
         if (node.tagName === 'FONT') {
           const size = Number(node.getAttribute('size'));
-          if (size >= 5) classes.push('web-wyg-large');
-          else if (size > 0 && size <= 2) classes.push('web-wyg-small');
+          if (size >= 5) classes.push('wbd-wyg-large');
+          else if (size > 0 && size <= 2) classes.push('wbd-wyg-small');
         }
         output.className = [...new Set(classes)].join(' ');
       }
@@ -56,21 +56,21 @@
 
   function init(scope = document, options = {}) {
     const config = { ...defaults, ...options, labels: { ...defaults.labels, ...options.labels } };
-    const sources = scope.matches?.('textarea.web-wyg') ? [scope] : scope.querySelectorAll('textarea.web-wyg');
+    const sources = scope.matches?.('textarea.wbd_wyg') ? [scope] : scope.querySelectorAll('textarea.wbd_wyg');
     sources.forEach(source => {
       if (instances.has(source)) return;
       const labels = config.labels;
       const wrapper = document.createElement('div');
-      wrapper.className = 'web-wyg-wrapper';
+      wrapper.className = 'wbd-wyg-wrapper';
       const toolbar = document.createElement('div');
-      toolbar.className = 'web-wyg-toolbar';
+      toolbar.className = 'wbd-wyg-toolbar';
       toolbar.setAttribute('role', 'group');
       toolbar.setAttribute('aria-label', labels.toolbar);
       const buttons = {};
       for (const name of ['bold', 'underline', 'larger', 'smaller', 'code']) {
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = 'web-wyg-button';
+        button.className = 'wbd-wyg-button';
         button.dataset.webWygCommand = name;
         button.textContent = labels[name];
         button.setAttribute('aria-label', labels[name]);
@@ -79,13 +79,13 @@
         buttons[name] = button;
       }
       const body = document.createElement('div');
-      body.className = 'web-wyg-body';
+      body.className = 'wbd-wyg-body';
       const gutter = document.createElement('div');
-      gutter.className = 'web-wyg-gutter';
+      gutter.className = 'wbd-wyg-gutter';
       gutter.setAttribute('aria-hidden', 'true');
       gutter.hidden = true;
       const surface = document.createElement('div');
-      surface.className = 'web-wyg-surface';
+      surface.className = 'wbd-wyg-surface';
       surface.contentEditable = 'true';
       surface.setAttribute('role', 'textbox');
       surface.setAttribute('aria-multiline', 'true');
@@ -94,12 +94,12 @@
       if (label?.textContent) surface.setAttribute('aria-label', label.textContent.trim());
       else surface.setAttribute('aria-label', source.getAttribute('aria-label') || labels.toolbar);
       const help = document.createElement('p');
-      help.className = 'web-wyg-help';
+      help.className = 'wbd-wyg-help';
       help.textContent = labels.help;
       source.before(wrapper);
       body.append(gutter, surface, source);
       wrapper.append(toolbar, body, help);
-      source.classList.add('web-wyg-source');
+      source.classList.add('wbd-wyg-source');
       source.hidden = true;
       surface.innerHTML = html(source.value);
       const state = { code: false, range: null };
@@ -137,7 +137,7 @@
         source.hidden = !state.code;
         surface.hidden = state.code;
         gutter.hidden = !state.code;
-        wrapper.classList.toggle('web-wyg-code', state.code);
+        wrapper.classList.toggle('wbd-wyg-code', state.code);
         buttons.code.textContent = state.code ? labels.visual : labels.code;
         buttons.code.setAttribute('aria-pressed', String(state.code));
         lines();
@@ -147,8 +147,8 @@
         if (name === 'code') { toggleCode(); return; }
         const tags = {
           bold: ['<b>', '</b>'], underline: ['<u>', '</u>'],
-          larger: ['<span class="web-wyg-large">', '</span>'],
-          smaller: ['<span class="web-wyg-small">', '</span>']
+          larger: ['<span class="wbd-wyg-large">', '</span>'],
+          smaller: ['<span class="wbd-wyg-small">', '</span>']
         };
         if (state.code) {
           const start = source.selectionStart, end = source.selectionEnd;
@@ -168,7 +168,7 @@
           if (!selection?.rangeCount || selection.isCollapsed) return;
           const range = selection.getRangeAt(0);
           const element = document.createElement(name === 'bold' ? 'b' : name === 'underline' ? 'u' : 'span');
-          if (['larger', 'smaller'].includes(name)) element.className = name === 'larger' ? 'web-wyg-large' : 'web-wyg-small';
+          if (['larger', 'smaller'].includes(name)) element.className = name === 'larger' ? 'wbd-wyg-large' : 'wbd-wyg-small';
           element.append(range.extractContents()); range.insertNode(element); range.selectNodeContents(element);
           selection.removeAllRanges(); selection.addRange(range);
         }
@@ -198,7 +198,7 @@
       source.addEventListener('scroll', () => { gutter.scrollTop = source.scrollTop; });
       toolbar.addEventListener('mousedown', event => { if (event.target.closest('button')) event.preventDefault(); });
       toolbar.addEventListener('click', event => {
-        const button = event.target.closest('[data-web-wyg-command]');
+        const button = event.target.closest('[data-wbd-wyg-command]');
         if (button) command(button.dataset.webWygCommand);
       });
       wrapper.addEventListener('keydown', event => {
@@ -209,15 +209,15 @@
       label?.addEventListener('click', event => { if (!state.code) { event.preventDefault(); surface.focus(); } });
       instances.set(source, { sync, destroy() {
         sync(); wrapper.before(source); source.hidden = false;
-        source.classList.remove('web-wyg-source'); wrapper.remove(); instances.delete(source);
+        source.classList.remove('wbd-wyg-source'); wrapper.remove(); instances.delete(source);
       } });
       lines();
     });
   }
 
   function each(scope, method) {
-    const sources = scope.matches?.('textarea.web-wyg') ? [scope] : scope.querySelectorAll('textarea.web-wyg');
+    const sources = scope.matches?.('textarea.wbd_wyg') ? [scope] : scope.querySelectorAll('textarea.wbd_wyg');
     sources.forEach(source => instances.get(source)?.[method]());
   }
-  window.WebWyg = { version: '1.0.0', init, sync: scope => each(scope || document, 'sync'), destroy: scope => each(scope || document, 'destroy'), sanitize, html, text };
+  window.WbdWyg = { version: '1.0.1', init, sync: scope => each(scope || document, 'sync'), destroy: scope => each(scope || document, 'destroy'), sanitize, html, text };
 })();
